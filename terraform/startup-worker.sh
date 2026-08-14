@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+F#!/usr/bin/env bash
 set -euo pipefail
 
 APP_DIR="/opt/yt2mf"
@@ -112,7 +112,7 @@ case "$ARCH" in
 esac
 
 curl -fL \
-  "https://storage.googleapis.com/cloud-sql-connectors/cloud-sql-proxy/v2.18.2/cloud-sql-proxy.linux.${PROXY_ARCH}" \
+  "https://storage.googleapis.com/cloud-sql-connectors/cloud-sql-proxy/v2.18.2/cloud-sql-proxy.linux.$${PROXY_ARCH}" \
   -o /usr/local/bin/cloud-sql-proxy
 
 chmod 0755 /usr/local/bin/cloud-sql-proxy
@@ -139,12 +139,8 @@ systemctl enable --now yt2mf-cloud-sql-proxy
 # ============================================================
 # Secrets
 # ============================================================
-
-DB_PASSWORD="$(
-  gcloud secrets versions access latest \
-    --secret='${db_secret}'
-)"
-
+DB_PASSWORD="$(gcloud secrets versions access latest --secret='${db_secret}')"
+DB_PASSWORD_ENCODED="$(python3 -c 'import urllib.parse,sys; print(urllib.parse.quote(sys.argv[1], safe=""))' "$DB_PASSWORD")"
 BOT_TOKEN="$(
   gcloud secrets versions access latest \
     --secret='${bot_secret}'
@@ -159,7 +155,7 @@ GCP_PROJECT_ID=$(gcloud config get-value project 2>/dev/null)
 PUBSUB_TOPIC=video-jobs
 PUBSUB_SUBSCRIPTION=video-workers
 
-DATABASE_URL=postgresql://${db_user}:$${DB_PASSWORD}@127.0.0.1:5432/${db_name}
+DATABASE_URL=postgresql://${db_user}:$${DB_PASSWORD_ENCODED}@127.0.0.1:5432/${db_name}
 
 BOT_TOKEN=$${BOT_TOKEN}
 
