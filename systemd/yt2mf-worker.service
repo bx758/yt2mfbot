@@ -1,0 +1,23 @@
+[Unit]
+Description=yt2mf Google Cloud Worker
+After=network-online.target yt2mf-cloud-sql-proxy.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=yt2mf
+Group=yt2mf
+WorkingDirectory=/opt/yt2mf
+EnvironmentFile=/etc/yt2mf/yt2mf.env
+Environment=PYTHONUNBUFFERED=1
+ExecStart=/opt/yt2mf/venv/bin/python -m app.worker
+Restart=always
+RestartSec=5
+TimeoutStopSec=30
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ReadWritePaths=/var/lib/yt2mf
+
+[Install]
+WantedBy=multi-user.target

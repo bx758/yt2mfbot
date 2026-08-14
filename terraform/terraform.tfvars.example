@@ -1,0 +1,8 @@
+project_id = "mylab-504811"
+repo_url   = "https://github.com/bx758/yt2mfbot"
+
+# Set this to your current Telegram bot token. Do not commit secrets to Git.
+bot_token = "8696451485:AAGzkX3-bk8nnIUAVDydw9qPB5D67GPRd0c"
+
+# Optional. Leave empty to let Terraform generate a random 32-character password.
+db_password = ""
