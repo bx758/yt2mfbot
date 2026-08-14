@@ -2,4 +2,4 @@ python-telegram-bot>=22,<23
 google-cloud-pubsub>=2.29,<3
 google-cloud-storage>=2.18,<4
 psycopg[binary]>=3.2,<4
-mediafire>=0.7
+mediafire==0.6.1
